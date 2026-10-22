@@ -1,0 +1,106 @@
+{
+ "lists": [
+  "liens_test",
+  "jawed",
+  "officialpsy",
+  "Rick Astley"
+ ],
+ "next_order": 6,
+ "settings": {
+  "check_after_import": true,
+  "cookies": "",
+  "dest_dir": "D:\\a\\TubeMaster\\TubeMaster\\app\\exports_test",
+  "format": 0,
+  "include_live": true,
+  "include_shorts": true,
+  "pause_enabled": false,
+  "pause_every_min": 30,
+  "pause_sec": 60,
+  "quality": 1,
+  "remove_done": false,
+  "sort": 0,
+  "sort_desc": false,
+  "subfolders": true,
+  "tools_dir": ""
+ },
+ "videos": [
+  {
+   "added": 1792697230,
+   "channel": "Rick Astley",
+   "channel_url": "https://www.youtube.com/@RickAstleyYT",
+   "checked": 1792697231,
+   "id": "dQw4w9WgXcQ",
+   "lists": [
+    "liens_test",
+    "Rick Astley"
+   ],
+   "order": 1,
+   "published": "2009-10-24",
+   "status": 1,
+   "title": "Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster)"
+  },
+  {
+   "added": 1792697230,
+   "arch_channel": "",
+   "arch_channel_url": "",
+   "arch_date": "",
+   "arch_first": "",
+   "arch_last": "",
+   "arch_snaps": 0,
+   "arch_title": "",
+   "channel": "jawed",
+   "channel_url": "https://www.youtube.com/@jawed",
+   "checked": 1792697231,
+   "id": "jNQXAC9IVRw",
+   "lists": [
+    "liens_test",
+    "jawed"
+   ],
+   "order": 2,
+   "published": "2005-04-23",
+   "start": 5,
+   "status": 1,
+   "title": "Me at the zoo"
+  },
+  {
+   "added": 1792697230,
+   "channel": "",
+   "checked": 1792697231,
+   "id": "-7m9G8IwJ8c",
+   "lists": [
+    "liens_test"
+   ],
+   "order": 3,
+   "status": 2,
+   "title": ""
+  },
+  {
+   "added": 1792697230,
+   "channel": "",
+   "checked": 1792697231,
+   "id": "H47Gmw39i1E",
+   "lists": [
+    "liens_test"
+   ],
+   "order": 4,
+   "status": 2,
+   "title": ""
+  },
+  {
+   "added": 1792697230,
+   "channel": "officialpsy",
+   "channel_url": "https://www.youtube.com/@officialpsy",
+   "checked": 1792697231,
+   "id": "9bZkp7q19f0",
+   "lists": [
+    "liens_test",
+    "officialpsy"
+   ],
+   "order": 5,
+   "published": "2012-07-15",
+   "start": 30,
+   "status": 1,
+   "title": "PSY - GANGNAM STYLE(강남스타일) M/V"
+  }
+ ]
+}

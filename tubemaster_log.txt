@@ -1,0 +1,51 @@
+19:27:08 journal : TubeMaster prêt — 0 lien(s), 0 liste(s).
+19:27:10 journal : Import de « liens_test.txt » : 6 lien(s), 5 nouveau(x), 1 déjà présent(s) → liste « liens_test ».
+19:27:10 SELFTEST import : 5 liens, 0 en ligne, 0 morts, 5 inconnus
+19:27:11 journal : Vérification terminée : 5 lien(s), 2 mort(s) dans la bibliothèque.
+19:27:12 polices : 5 caractère(s) supplémentaire(s)
+19:27:22 SELFTEST vérification : 5 liens, 3 en ligne, 2 morts, 0 inconnus
+19:27:22 SELFTEST   dQw4w9WgXcQ En ligne | Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster) | Rick Astley
+19:27:22 SELFTEST   jNQXAC9IVRw En ligne | Me at the zoo | jawed
+19:27:22 SELFTEST   -7m9G8IwJ8c Supprimée | (vidéo indisponible) | 
+19:27:22 SELFTEST   H47Gmw39i1E Supprimée | (vidéo indisponible) | 
+19:27:22 SELFTEST   9bZkp7q19f0 En ligne | PSY - GANGNAM STYLE(강남스타일) M/V | officialpsy
+19:27:22 webview : chargeur officiel OK
+19:27:26 SELFTEST lecture de jNQXAC9IVRw
+19:27:42 SELFTEST lecteur : "Me at the zoo - YouTube | 0x0 t=0.0 pause"
+19:27:46 journal : Recherche d'origine de -7m9G8IwJ8c…
+19:28:28 SELFTEST lien mort -7m9G8IwJ8c : YouTube 404, 0 capture(s) erreur Operation timed out after 40001 milliseconds with 0 bytes received, nouvel essai…, titre «  », chaîne «  », date 
+19:28:28 webview : chargeur officiel OK
+19:28:28 journal : Recherche d'origine de jNQXAC9IVRw…
+19:28:48 SELFTEST archives jNQXAC9IVRw : 0 capture(s), titre «  », chaîne «  », date , vues , capture 
+19:28:48 journal : 1 lien(s) ajouté(s) à la file d'export (MP3, qualité max).
+19:28:48 journal : 1 lien(s) ajouté(s) à la file d'export (MKV, 720p).
+19:28:48 journal : Téléchargement de yt-dlp : https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe
+19:28:48 journal : Téléchargement de ffmpeg : https://github.com/yt-dlp/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl.zip
+19:28:48 journal : Téléchargement de deno : https://github.com/denoland/deno/releases/latest/download/deno-x86_64-pc-windows-msvc.zip
+19:28:48 SELFTEST outils avant l'export : yt-dlp , ffmpeg , deno 
+19:28:48 SELFTEST export lancé, yt-dlp ABSENT, ffmpeg ABSENT
+19:28:48 SELFTEST navigateur (Filmot) : "Verify You're Human | https://filmot.com/captcha-verify"
+19:28:49 journal : yt-dlp installé : D:\a\TubeMaster\TubeMaster\app\yt-dlp.exe
+19:28:51 journal : deno installé : D:\a\TubeMaster\TubeMaster\app\deno.exe
+19:28:53 journal : ffmpeg installé : D:\a\TubeMaster\TubeMaster\app\ffmpeg.exe
+19:28:53 export : yt-dlp --newline --no-playlist --encoding utf-8 --no-simulate --print "after_move:TMFILE:%(filepath)s" --windows-filenames --ffmpeg-location D:\a\TubeMaster\TubeMaster\app --js-runtimes deno:D:\a\TubeMaster\TubeMaster\app\deno.exe -f "bv*[height<=720]+ba/b[height<=720]/bv*+ba/b" --merge-output-format mkv --remux-video mkv -o "D:\a\TubeMaster\TubeMaster\app\exports_test\MKV-720p/%(title)s.%(ext)s" https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_1MB.mp4
+19:28:58 export : yt-dlp --newline --no-playlist --encoding utf-8 --no-simulate --print "after_move:TMFILE:%(filepath)s" --windows-filenames --ffmpeg-location D:\a\TubeMaster\TubeMaster\app --js-runtimes deno:D:\a\TubeMaster\TubeMaster\app\deno.exe -f bv*[ext=mp4]+ba[ext=m4a]/bv*+ba/b --merge-output-format mp4 --remux-video mp4 -o "D:\a\TubeMaster\TubeMaster\app\exports_test\MP4-max/%(title)s.%(ext)s" https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_1MB.mp4
+19:29:02 export : yt-dlp --newline --no-playlist --encoding utf-8 --no-simulate --print "after_move:TMFILE:%(filepath)s" --windows-filenames --ffmpeg-location D:\a\TubeMaster\TubeMaster\app --js-runtimes deno:D:\a\TubeMaster\TubeMaster\app\deno.exe -f ba/b -x --audio-format mp3 --audio-quality 0 -o "D:\a\TubeMaster\TubeMaster\app\exports_test\MP3-max/%(title)s.%(ext)s" http://127.0.0.1:8765/test.wav
+19:29:06 export : yt-dlp --newline --no-playlist --encoding utf-8 --no-simulate --print "after_move:TMFILE:%(filepath)s" --windows-filenames --ffmpeg-location D:\a\TubeMaster\TubeMaster\app --js-runtimes deno:D:\a\TubeMaster\TubeMaster\app\deno.exe -f ba/b -x --audio-format mp3 --audio-quality 0 -o "D:\a\TubeMaster\TubeMaster\app\exports_test\MP3-max/%(title)s.%(ext)s" https://www.youtube.com/watch?v=jNQXAC9IVRw
+19:29:10 export : yt-dlp --newline --no-playlist --encoding utf-8 --no-simulate --print "after_move:TMFILE:%(filepath)s" --windows-filenames --ffmpeg-location D:\a\TubeMaster\TubeMaster\app --js-runtimes deno:D:\a\TubeMaster\TubeMaster\app\deno.exe -f "bv*[height<=720]+ba/b[height<=720]/bv*+ba/b" --merge-output-format mkv --remux-video mkv -o "D:\a\TubeMaster\TubeMaster\app\exports_test\MKV-720p/%(title)s.%(ext)s" https://www.youtube.com/watch?v=jNQXAC9IVRw
+19:29:15 journal : Export terminé : 3 réussi(s), 2 en erreur.
+19:29:15 SELFTEST export « Essai MKV 720p » MKV : terminé, D:\a\TubeMaster\TubeMaster\app\exports_test\MKV-720p\Big_Buck_Bunny_720_10s_1MB.mkv (968226 octets)
+19:29:15 SELFTEST export « Essai MP4 max » MP4 : terminé, D:\a\TubeMaster\TubeMaster\app\exports_test\MP4-max\Big_Buck_Bunny_720_10s_1MB.mp4 (969201 octets)
+19:29:15 SELFTEST export « Essai MP3 » MP3 : terminé, D:\a\TubeMaster\TubeMaster\app\exports_test\MP3-max\test.mp3 (29645 octets)
+19:29:15 SELFTEST export « Me at the zoo » MP3 : ERREUR, pas de fichier — ERROR: [youtube] jNQXAC9IVRw: Sign in to confirm you’re not a bot. This helps protect our community. Use --cookies-from-browser or --cookies for the authentic
+19:29:15 SELFTEST export « Me at the zoo » MKV : ERREUR, pas de fichier — ERROR: [youtube] jNQXAC9IVRw: Sign in to confirm you’re not a bot. This helps protect our community. Use --cookies-from-browser or --cookies for the authentic
+19:29:47 journal : Aucune information retrouvée automatiquement pour jNQXAC9IVRw (0 capture(s)).
+19:30:04 SELFTEST miniatures conservées : 3
+19:30:04 SELFTEST date de mise en ligne dQw4w9WgXcQ : 24/10/2009
+19:30:04 SELFTEST date de mise en ligne jNQXAC9IVRw : 23/04/2005
+19:30:04 SELFTEST date de mise en ligne -7m9G8IwJ8c : 
+19:30:04 SELFTEST date de mise en ligne H47Gmw39i1E : 
+19:30:04 SELFTEST date de mise en ligne 9bZkp7q19f0 : 15/07/2012
+19:30:04 journal : 3 lien(s) rangé(s) dans 3 liste(s) de chaîne, 2 sans chaîne connue (non déplacé(s)).
+19:30:04 SELFTEST listes après rangement par chaîne : liens_test ; jawed ; officialpsy ; Rick Astley ; 
+19:30:12 SELFTEST fin : 5 liens, 3 en ligne, 2 morts, 0 inconnus
