@@ -1,0 +1,41 @@
+TubeMaster — gestion des liens YouTube
+======================================
+
+Démarrage
+---------
+1. Décompressez le dossier où vous voulez (par exemple à côté de votre yt-dlp.exe).
+2. Lancez tubemaster.exe (Windows 10/11 ; le lecteur utilise Edge WebView2, déjà présent
+   sur Windows 11 et sur la plupart des Windows 10).
+3. Gardez WebView2Loader.dll à côté de tubemaster.exe.
+
+Les données (liens, listes, réglages) sont dans tubemaster_data.json, à côté du programme.
+
+Onglet Liens
+------------
+- « Importer des fichiers (.txt) » : chaque fichier devient une liste (Youtube.txt → liste
+  « Youtube »). Glisser-déposer accepté. Les doublons sont détectés.
+- « Coller les liens » : tous les liens YouTube du presse-papiers.
+- « Chaîne ou playlist » : @chaîne, URL de chaîne ou de playlist → toutes ses vidéos (yt-dlp).
+- Tri : menu « Trier par », bouton ↑/↓, bouton « Trier », ou clic sur un en-tête de colonne.
+- Sélection : clic, Ctrl+clic, Maj+clic, Ctrl+A. Double-clic : lecture (ou origine si mort).
+- Statut vérifié automatiquement : En ligne / Supprimée / Privée.
+
+Onglet Lecteur
+--------------
+La page YouTube s'affiche dans la fenêtre. Pg.Préc / Pg.Suiv : vidéo précédente / suivante,
+« Enchaîner » : passe à la suivante à la fin, F11 : plein écran, Échap : sortie.
+
+Onglet Export
+-------------
+Format MKV, MP4 ou MP3 ; qualité « taille maxi » ou 720p (MP3 : qualité max ou 192 kb/s).
+Il faut yt-dlp.exe et ffmpeg.exe (boutons « Télécharger » si absents) ; deno.exe est demandé
+par les versions récentes de yt-dlp pour YouTube (bouton « Télécharger » aussi).
+Si YouTube répond « Sign in to confirm you're not a bot », choisissez votre fichier
+cookies.txt (exporté depuis votre navigateur) dans « Cookies YouTube ».
+
+Onglet Lien mort
+----------------
+Collez un lien supprimé : TubeMaster interroge YouTube et la Wayback Machine (titre, chaîne,
+date retrouvés dans les pages archivées) et ouvre Filmot, la vidéo archivée, Ghostarchive,
+archive.today, Google… dans le navigateur intégré (qui passe les vérifications « humain »).
+« Analyser les liens morts de la bibliothèque » fait la recherche pour tous les liens morts.

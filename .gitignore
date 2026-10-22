@@ -1,0 +1,7 @@
+build*/
+*.exe
+tubemaster_data.json
+tubemaster_log.txt
+cookies*.txt
+miniatures/
+webview_data/

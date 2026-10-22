@@ -1,0 +1,138 @@
+# TubeMaster : compilation de l'exe Windows (llvm-mingw) puis essai réel sous Windows :
+# import d'un fichier de liens, vérification, lecteur intégré, lien mort, export yt-dlp.
+name: TubeMaster
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Toolchain llvm-mingw
+        run: |
+          curl -sSL -o llvm-mingw.tar.xz https://github.com/mstorsjo/llvm-mingw/releases/download/20241030/llvm-mingw-20241030-ucrt-ubuntu-20.04-x86_64.tar.xz
+          tar xf llvm-mingw.tar.xz
+          T=$PWD/llvm-mingw-20241030-ucrt-ubuntu-20.04-x86_64
+          cat > mingw.cmake <<EOT
+          set(CMAKE_SYSTEM_NAME Windows)
+          set(CMAKE_SYSTEM_PROCESSOR x86_64)
+          set(CMAKE_C_COMPILER $T/bin/x86_64-w64-mingw32-clang)
+          set(CMAKE_CXX_COMPILER $T/bin/x86_64-w64-mingw32-clang++)
+          set(CMAKE_RC_COMPILER $T/bin/x86_64-w64-mingw32-windres)
+          set(CMAKE_FIND_ROOT_PATH $T/x86_64-w64-mingw32)
+          set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+          set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+          set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+          set(CMAKE_EXE_LINKER_FLAGS_INIT "-static")
+          EOT
+      - name: Compiler
+        run: |
+          cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=$PWD/mingw.cmake -DCMAKE_BUILD_TYPE=Release
+          cmake --build build --parallel
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tubemaster-exe
+          path: |
+            build/tubemaster.exe
+            build/tubemaster_tests.exe
+
+  windows-test:
+    needs: build
+    runs-on: windows-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: tubemaster-exe
+          path: app
+      - name: Tests unitaires
+        run: app/tubemaster_tests.exe
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: LISEZMOI.txt
+          sparse-checkout-cone-mode: false
+          path: src
+      - name: Chargeur officiel WebView2 (NuGet Microsoft.Web.WebView2)
+        shell: pwsh
+        run: |
+          Invoke-WebRequest https://www.nuget.org/api/v2/package/Microsoft.Web.WebView2/1.0.2903.40 -OutFile wv2.zip
+          Expand-Archive wv2.zip wv2
+          Copy-Item (Get-ChildItem wv2 -Recurse -Filter WebView2Loader.dll | Where-Object { $_.FullName -match 'x64' } | Select-Object -First 1).FullName app/
+      - name: Paquet à livrer
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory dist/TubeMaster -Force | Out-Null
+          Copy-Item app/tubemaster.exe, app/WebView2Loader.dll dist/TubeMaster/
+          Copy-Item src/LISEZMOI.txt dist/TubeMaster/
+          Compress-Archive dist/TubeMaster dist/TubeMaster-windows-x64.zip
+      - name: OpenGL logiciel (Mesa) pour la machine de test sans GPU
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download --repo pal1000/mesa-dist-win --pattern '*release-msvc.7z' --dir mesa
+          7z x (Get-ChildItem mesa/*.7z | Select-Object -First 1).FullName -omesa/x -y | Out-Null
+          Copy-Item mesa/x/x64/*.dll app/
+      - name: Essai réel (captures d'écran)
+        shell: pwsh
+        run: |
+          Add-Type -AssemblyName System.Windows.Forms, System.Drawing
+          New-Item -ItemType Directory shots | Out-Null
+          function Shot($n) {
+            $b = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds
+            $bmp = New-Object System.Drawing.Bitmap $b.Width, $b.Height
+            $g = [System.Drawing.Graphics]::FromImage($bmp)
+            $g.CopyFromScreen($b.Location, [System.Drawing.Point]::Empty, $b.Size)
+            $bmp.Save("shots/$n.png")
+          }
+          @(
+            "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+            "https://youtu.be/jNQXAC9IVRw?t=5"
+            "https://www.youtube.com/watch?v=-7m9G8IwJ8c"
+            "https://www.youtube.com/watch?v=H47Gmw39i1E"
+            "https://www.youtube.com/watch?v=9bZkp7q19f0&t=30s"
+            "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+          ) | Set-Content -Encoding utf8 liens_test.txt
+          # Son de test (3 s, 440 Hz) servi en local : essai de la conversion MP3 sans dépendre d'un site.
+          python -c "import wave,struct,math; w=wave.open('test.wav','wb'); w.setnchannels(1); w.setsampwidth(2); w.setframerate(44100); w.writeframes(b''.join(struct.pack('<h', int(8000*math.sin(2*math.pi*440*i/44100))) for i in range(44100*3))); w.close()"
+          Start-Process python -ArgumentList "-m","http.server","8765" -WindowStyle Hidden
+          Start-Sleep 2
+          $env:TUBEMASTER_SELFTEST_AUDIO = "http://127.0.0.1:8765/test.wav"
+          $env:TUBEMASTER_SELFTEST = "1"
+          $env:TUBEMASTER_SELFTEST_FILE = (Resolve-Path liens_test.txt).Path
+          $env:TUBEMASTER_SELFTEST_DEAD = "https://www.youtube.com/watch?v=-7m9G8IwJ8c"
+          $env:TUBEMASTER_SELFTEST_MEDIA = "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_1MB.mp4"
+          $p = Start-Process -FilePath app/tubemaster.exe -WorkingDirectory app -PassThru
+          Start-Sleep 13; Shot "1-liens"
+          Start-Sleep 20; Shot "2-lecteur"
+          Start-Sleep 30; Shot "3-lien-mort"
+          Start-Sleep 32; Shot "4-filmot"
+          Start-Sleep 30; Shot "5-export"
+          Start-Sleep 50; Shot "6-export-fin"
+          Start-Sleep 6; Shot "7-liens-morts"
+          if (-not $p.WaitForExit(60000)) { Shot "8-bloque"; Stop-Process $p -Force; Write-Host "processus toujours actif" }
+          else { Write-Host "code de sortie : $($p.ExitCode)" }
+          Get-Content app/tubemaster_log.txt -ErrorAction SilentlyContinue
+          Get-ChildItem -Recurse app/exports_test -ErrorAction SilentlyContinue | Select-Object FullName, Length
+      - name: Résultats publiés sur la branche essais
+        if: always()
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory out -Force | Out-Null
+          Copy-Item shots/* out/ -ErrorAction SilentlyContinue
+          Copy-Item app/tubemaster_log.txt out/ -ErrorAction SilentlyContinue
+          Copy-Item app/tubemaster_data.json out/ -ErrorAction SilentlyContinue
+          Copy-Item dist/TubeMaster-windows-x64.zip out/ -ErrorAction SilentlyContinue
+          cd out
+          git init -q -b essais
+          git config user.name "banc-essai"
+          git config user.email "banc-essai@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Essai $env:GITHUB_SHA"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" essais
