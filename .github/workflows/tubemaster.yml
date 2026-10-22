@@ -5,8 +5,12 @@ name: TubeMaster
 on:
   push:
     branches: [main]
-    tags: ['v*']          # tag vX.Y.Z : après l'essai Windows réussi, publication d'une release
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Version à publier (ex. v1.0.0) : release créée après l'essai Windows réussi"
+        required: false
+        default: 
 
 permissions:
   contents: write
@@ -130,13 +134,13 @@ jobs:
             if ($log -notmatch [regex]::Escape("« $e »") + "[^\n]*: terminé") { throw "Export en échec : $e" }
           }
           Write-Host "Essai complet : OK"
-      - name: Release (tag v*)
-        if: startsWith(github.ref, 'refs/tags/v')
+      - name: Release
+        if: github.event_name == 'workflow_dispatch' && inputs.version != ''
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          $tag = "${{ github.ref_name }}"
+          $tag = "${{ inputs.version }}"
           $notes = @"
           TubeMaster $tag — gestionnaire de liens YouTube pour Windows 10/11.
 
@@ -150,7 +154,7 @@ jobs:
 
           Testé sous Windows (essai automatique) avant publication.
           "@
-          gh release create $tag dist/TubeMaster-windows-x64.zip --repo ${{ github.repository }} --title "TubeMaster $tag" --notes $notes
+          gh release create $tag dist/TubeMaster-windows-x64.zip --repo ${{ github.repository }} --target ${{ github.sha }} --title "TubeMaster $tag" --notes $notes
       - name: Résultats publiés sur la branche essais
         if: always()
         shell: pwsh
